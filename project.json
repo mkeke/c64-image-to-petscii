@@ -1,0 +1,19 @@
+{
+	"defaults" : {
+		"paths": {
+		},
+		"variables": {
+			"pageTitle": "Image to PETSCII converter"
+		}
+	},
+
+	"versions": {
+		"z": {
+			"paths" : {
+				"dest": "out/"
+			},
+			"variables": {
+			}
+		}
+	}
+}

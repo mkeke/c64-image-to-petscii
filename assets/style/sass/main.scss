@@ -1,0 +1,43 @@
+* {
+    margin: 0; padding: 0;
+}
+
+ul {
+    list-style: none;
+}
+
+html, body {
+    height: 100%;
+    background-color: #212121;
+    color: #eeeeee;
+
+    padding: 10px;
+}
+
+.layout {
+    border: 1px solid green;
+    padding: 10px;
+}
+
+section {
+    width: 320px;
+    height: 200px;
+    margin: 0 auto 10px auto;
+    border: 2px dashed #666;
+    padding: 5px;
+    canvas {
+        width: 320px;
+        height: 200px;
+        border: 0;
+    }
+}
+
+.dragover {
+    border: 2px solid green;
+}
+
+section.b canvas {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left top;
+}
