@@ -28,11 +28,11 @@ visualising the different stages of the conversion
 [BASIC]
 ```
 
-## drag-drop image, get image data
+## DONE drag-drop image, get image data
 
-## resize image to 320x200, centered
+## DONE resize image to 320x200, centered
 
-## put image on canvas
+## DONE put image on canvas
 
 ## edit image palette
 
@@ -43,3 +43,5 @@ visualising the different stages of the conversion
 ## create reference map
 
 ## preload reference image 0-255 16x16
+
+## nudge dropped image 1px in either direction
