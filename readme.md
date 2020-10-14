@@ -36,11 +36,15 @@ visualising the different stages of the conversion
 
 - [x] DONE put image on canvas
 
-- [ ] edit image palette
-    - [ ] read pixel data
-    - [ ] find nearest color  
+- [x] edit image palette
+    - [x] read pixel data
+    - [x] find nearest color  
     distance^2 = (R2-R1)^2 + (G2-G1)^2 + (B2-B1)^2  
     Do this for each pixel (yikes)
+
+- [x] find dominant color
+
+- [ ] create 8x8 sub dominant on dominant
 
 - [ ] read reference image
 
