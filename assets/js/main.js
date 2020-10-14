@@ -78,6 +78,8 @@ function clearCanvases() {
     state.ctxC.fillRect(0, 0, 320, 200);
     state.ctxD.fillStyle = "#000000";
     state.ctxD.fillRect(0, 0, 320, 200);
+    state.ctxE.fillStyle = "#000000";
+    state.ctxE.fillRect(0, 0, 320, 200);
 }
 
 function doStuff() {
@@ -127,6 +129,13 @@ function applyDominantSubdominant() {
 
     // TODO tell farger når man finner ut nærmeste farge
     // bedre måte å finne tilbake til fargekode, når det skal lages basic
+    for(let y=state.dy; y<state.dy+state.height; y++) {
+        for(let x=state.dx; x<state.dx+state.width; x++) {
+            let p = state.ctxB.getImageData(x,y,1,1).data;
+            state.ctxC.fillStyle = "rgba("+p[0]+","+p[1]+","+p[2]+","+p[3]+")";
+            state.ctxC.fillRect(x,y,1,1);
+        }
+    }
 
 
     // find sub-dominant color for each 8x8 chunk
@@ -257,6 +266,7 @@ function initState(){
     state.ctxB = z("section.b canvas").getContext("2d");
     state.ctxC = z("section.c canvas").getContext("2d");
     state.ctxD = z("section.d canvas").getContext("2d");
+    state.ctxE = z("section.e canvas").getContext("2d");
 }
 function initConf(){}
 

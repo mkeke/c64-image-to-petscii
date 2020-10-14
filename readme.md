@@ -54,3 +54,8 @@ visualising the different stages of the conversion
 
 - [ ] nudge dropped image 1px in either direction
 
+- [ ] force dominant color
+
+- [ ] nudge original position
+
+- [ ] download images for all stages
