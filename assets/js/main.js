@@ -12,6 +12,10 @@ const state = {
     ctxB: null,
     ctxC: null,
     ctxD: null,
+    width: 0,
+    height: 0,
+    dx: 0,
+    dy: 0,
 };
 const conf = {};
 const raf = getRequestAnimationFrame();
@@ -91,6 +95,40 @@ function applyDominantSubdominant() {
     // find the dominant color in image
     // this will be used as the background color
 
+    let colorCount = {};
+
+    for(let y=state.dy; y<state.dy+state.height; y++) {
+        for(let x=state.dx; x<state.dx+state.width; x++) {
+            let p = state.ctxB.getImageData(x,y,1,1).data;
+            let key = p[0]+"-"+p[1]+"-"+p[2];
+            if(!colorCount[key]) {
+                colorCount[key] = 0;
+            }
+            colorCount[key]++;
+        }
+    }
+
+    let key = false;
+    let score = 0;
+    for(let k in colorCount) {
+        if(colorCount[k] > score) {
+            score = colorCount[k];
+            key = k;
+        }
+    }
+
+    log(colorCount);
+    log(key + " has " + colorCount[key] + " colors");
+
+    let col = key.split("-");
+
+    state.ctxC.fillStyle = "rgb("+col[0]+","+col[1]+","+col[2]+")";
+    state.ctxC.fillRect(0, 0, 320, 200);
+
+    // TODO tell farger når man finner ut nærmeste farge
+    // bedre måte å finne tilbake til fargekode, når det skal lages basic
+
+
     // find sub-dominant color for each 8x8 chunk
     // this will be the character color
 }
@@ -98,8 +136,8 @@ function applyDominantSubdominant() {
 
 function applyPalette() {
 
-    for(let y=0; y<200; y++) {
-        for(let x=0; x<320; x++) {
+    for(let y=state.dy; y<state.dy+state.height; y++) {
+        for(let x=state.dx; x<state.dx+state.width; x++) {
             let p = getNearestColor(state.ctxA.getImageData(x,y,1,1).data);
             state.ctxB.fillStyle = "rgba("+p[0]+","+p[1]+","+p[2]+","+p[3]+")";
             state.ctxB.fillRect(x,y,1,1);
@@ -148,21 +186,21 @@ function resizeImage(droppedImage){
     let oh=droppedImage.height;
 
     // calculate size to fit inside 320x200
-    let rw=320;
-    let rh=Math.round(oh*320/ow);
-    if (rh > 200) {
-        rh = 200;
-        rw = Math.round(ow*200/oh);
+    state.width=320;
+    state.height=Math.round(oh*320/ow);
+    if (state.height > 200) {
+        state.height = 200;
+        state.width = Math.round(ow*200/oh);
     }
 
     // calculate offset to center image
-    let dx = rw<320?(320-rw)/2:0;
-    let dy = rh<200?(200-rh)/2:0;
+    state.dx = state.width<320?Math.round((320-state.width)/2):0;
+    state.dy = state.height<200?Math.round((200-state.height)/2):0;
 
-    log(`o=${ow}x${oh} r=${rw}x${rh} dx=${dx} dy=${dy}`);
+    log(`original:${ow}x${oh} resized:${state.width}x${state.height} offset:${state.dx}x${state.dy}`);
 
     // put scaled image in first canvas
-    state.ctxA.drawImage(droppedImage, 0, 0, ow, oh, dx, dy, rw, rh);
+    state.ctxA.drawImage(droppedImage, 0, 0, ow, oh, state.dx, state.dy, state.width, state.height);
 
 }
 
