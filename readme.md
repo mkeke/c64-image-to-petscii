@@ -30,23 +30,23 @@ visualising the different stages of the conversion
 
 ## master plan
 
-[X] DONE drag-drop image, get image data
+- [x] DONE drag-drop image, get image data
 
-[X] DONE resize image to 320x200, centered
+- [x] DONE resize image to 320x200, centered
 
-[X] DONE put image on canvas
+- [x] DONE put image on canvas
 
-[ ] edit image palette
-    [ ] read pixel data
-    [ ] find nearest color  
+- [ ] edit image palette
+    - [ ] read pixel data
+    - [ ] find nearest color  
     distance^2 = (R2-R1)^2 + (G2-G1)^2 + (B2-B1)^2  
     Do this for each pixel (yikes)
 
-[ ] read reference image
+- [ ] read reference image
 
-[ ] create reference map
+- [ ] create reference map
 
-[ ] preload reference image 0-255 16x16
+- [ ] preload reference image 0-255 16x16
 
-[ ] nudge dropped image 1px in either direction
+- [ ] nudge dropped image 1px in either direction
 
