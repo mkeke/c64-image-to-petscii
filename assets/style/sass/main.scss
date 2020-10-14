@@ -15,20 +15,38 @@ html, body {
 }
 
 .layout {
-    border: 1px solid green;
     padding: 10px;
+    text-align: center;
 }
 
 section {
-    width: 320px;
-    height: 200px;
+    display: inline-block;
+    vertical-align: top;
+
     margin: 0 auto 10px auto;
     border: 2px dashed #666;
     padding: 5px;
+
+    white-space: nowrap;
+
     canvas {
         width: 320px;
         height: 200px;
-        border: 0;
+        background-color: black;
+        display: inline-block;
+        vertical-align: top;
+    }
+    p {
+        width: 320px;
+        height: 200px;
+        padding: 5px;
+        box-sizing: border-box;
+
+        text-align: left;
+        background-color: #333;
+        display: inline-block;
+        vertical-align: top;
+        white-space: normal;
     }
 }
 

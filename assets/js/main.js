@@ -7,8 +7,14 @@
 let debugLevel = null;
 
 const dom = {};
-const state = {};
+const state = {
+    ctxA: null,
+    ctxB: null,
+    ctxC: null,
+    ctxD: null,
+};
 const conf = {};
+const raf = getRequestAnimationFrame();
 
 const palette = [
     { num: 0,  hex: "#000000", name:"Black" },
@@ -56,18 +62,79 @@ function preparePalette() {
         palette[i].g = parseInt(hex.substr(2,2),16);
         palette[i].b = parseInt(hex.substr(4,2),16);
     }
+
+}
+
+function clearCanvases() {
+    state.ctxA.fillStyle = "#000000";
+    state.ctxA.fillRect(0, 0, 320, 200);
+    state.ctxB.fillStyle = "#000000";
+    state.ctxB.fillRect(0, 0, 320, 200);
+    state.ctxC.fillStyle = "#000000";
+    state.ctxC.fillRect(0, 0, 320, 200);
+    state.ctxD.fillStyle = "#000000";
+    state.ctxD.fillRect(0, 0, 320, 200);
 }
 
 function doStuff() {
+    clearCanvases();
+
     resizeImage(arguments[0]);
     applyPalette();
-    // applyDominantSubdominant()
+
+    applyDominantSubdominant();
     // findNearestPetscii
     // createBasic
 }
 
+function applyDominantSubdominant() {
+    // find the dominant color in image
+    // this will be used as the background color
+
+    // find sub-dominant color for each 8x8 chunk
+    // this will be the character color
+}
+
+
 function applyPalette() {
 
+    for(let y=0; y<200; y++) {
+        for(let x=0; x<320; x++) {
+            let p = getNearestColor(state.ctxA.getImageData(x,y,1,1).data);
+            state.ctxB.fillStyle = "rgba("+p[0]+","+p[1]+","+p[2]+","+p[3]+")";
+            state.ctxB.fillRect(x,y,1,1);
+        }
+    }
+
+}
+
+function getNearestColor(data) {
+
+    // give a score to each of the 16 colors
+    let score = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+    for(let i in palette) {
+        score[i] = Math.pow(palette[i].r - data[0], 2)
+            + Math.pow(palette[i].g - data[1], 2)
+            + Math.pow(palette[i].b - data[2], 2);
+    }
+
+    // pick the index with the lowest score
+    let col = 0;
+    let min = Math.pow(255,2) * 3;
+    for(let i in score) {
+        if(score[i] < min) {
+            min = score[i];
+            col = i;
+        }
+    }
+
+    // use the new colors
+    data[0] = palette[col].r;
+    data[1] = palette[col].g;
+    data[2] = palette[col].b;
+
+    return data;
 }
 
 /*
@@ -95,8 +162,7 @@ function resizeImage(droppedImage){
     log(`o=${ow}x${oh} r=${rw}x${rh} dx=${dx} dy=${dy}`);
 
     // put scaled image in first canvas
-    let ctx = z("section.a canvas").getContext("2d");
-    ctx.drawImage(droppedImage, 0, 0, ow, oh, dx, dy, rw, rh);
+    state.ctxA.drawImage(droppedImage, 0, 0, ow, oh, dx, dy, rw, rh);
 
 }
 
@@ -148,5 +214,18 @@ function handleDragDropImage(el, callback) {
 }
 
 function initDOM(){}
-function initState(){}
+function initState(){
+    state.ctxA = z("section.a canvas").getContext("2d");
+    state.ctxB = z("section.b canvas").getContext("2d");
+    state.ctxC = z("section.c canvas").getContext("2d");
+    state.ctxD = z("section.d canvas").getContext("2d");
+}
 function initConf(){}
+
+function getRequestAnimationFrame() {
+    return window.requestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.msRequestAnimationFrame;
+}
+

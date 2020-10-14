@@ -12,11 +12,37 @@
 </head>
 <body>
     <div class="layout">
-        <section class="stage a resize droppable"><canvas width="320" height="200"></canvas></section>
-        <section class="stage b palette"><canvas width="320" height="200"></canvas></section>
-        <section class="stage c dominant"><canvas width="320" height="200"></canvas></section>
-        <section class="stage d petscii"><canvas width="320" height="200"></canvas></section>
-        <section class="stage e basic"></section>
+        <section class="stage a resize droppable">
+            <canvas width="320" height="200"></canvas>
+            <p>Original image, resized to max 320x200, centered</p>
+        </section>
+
+        <br />
+
+        <section class="stage b palette">
+            <canvas width="320" height="200"></canvas>
+            <p>Colors adjusted to C64 palette</p>
+        </section>
+
+        <br />
+
+        <section class="stage c dominant">
+            <canvas width="320" height="200"></canvas>
+            <p>dominant color background, and 8x8 squares with sub-dominant color</p>
+        </section>
+
+        <br />
+
+        <section class="stage d petscii">
+            <canvas width="320" height="200"></canvas>
+            <p>Nearest PETSCII character</p>
+        </section>
+
+        <br />
+
+        <section class="stage e basic">
+            
+        </section>
     </div>
     <script>
         const timestamp = @@timestamp;
