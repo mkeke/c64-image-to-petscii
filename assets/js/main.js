@@ -38,6 +38,7 @@ const palette = [
     { num: 14, hex: "#0088FF", name:"Light blue" },
     { num: 15, hex: "#BBBBBB", name:"Light grey 3" },
 ];
+const rgbLookup = {};
 
 zz.loadReady(function(){
 
@@ -51,8 +52,6 @@ zz.loadReady(function(){
 
     handleDragDropImage(z(".droppable"), doStuff);
 
-    /*
-    */
 });
 
 /*
@@ -65,8 +64,11 @@ function preparePalette() {
         palette[i].r = parseInt(hex.substr(0,2),16);
         palette[i].g = parseInt(hex.substr(2,2),16);
         palette[i].b = parseInt(hex.substr(4,2),16);
-    }
 
+        // adding color info to a reverse lokup table for convenience
+        rgbLookup[`${palette[i].r},${palette[i].g},${palette[i].b}`] =
+            palette[i];
+    }
 }
 
 function clearCanvases() {
@@ -83,52 +85,92 @@ function clearCanvases() {
 }
 
 function doStuff() {
+    // TODO request animation frame for each step?
+
     clearCanvases();
 
     resizeImage(arguments[0]);
+
     applyPalette();
 
-    applyDominantSubdominant();
+    applyDominantColor();
+
+    applySubDominantColor();
+
     // findNearestPetscii
     // createBasic
 }
 
-function applyDominantSubdominant() {
+function applySubDominantColor() {
+    // find sub-dominant color for each 8x8 chunk
+    // this will be the character color
+    for(let y=0; y<25; y++) {
+        for(let x=0; x<40; x++) {
+
+            let count = Array(16).fill(0);
+            let chunk = state.ctxC.getImageData(x*8, y*8, 8, 8);
+
+            // count the colors in the chunk. ignore dominant color
+            for(let i=0; i<256; i+=4) {
+                let rgb = `${chunk.data[i]},${chunk.data[i + 1]},${chunk.data[i + 2]}`;
+                if (rgbLookup[rgb].num != state.dominantIndex) {
+                    count[rgbLookup[rgb].num] ++;
+                }
+            }
+
+            // find the index with highest score
+            // this is the sub-dominant color
+            let max = 0;
+            let subIndex = state.dominantIndex;
+            for(let i in count) {
+                if (count[i] > max) {
+                    max = count[i];
+                    subIndex = i;
+                }
+            }
+
+            // replace everything that is not sub-dominant with dominant
+            for(let i=0; i<256; i+=4) {
+                let rgb = `${chunk.data[i]},${chunk.data[i + 1]},${chunk.data[i + 2]}`;
+                if (rgbLookup[rgb].num != subIndex) {                   
+                    chunk.data[i] = palette[state.dominantIndex].r;
+                    chunk.data[i+1] = palette[state.dominantIndex].g;
+                    chunk.data[i+2] = palette[state.dominantIndex].b;
+                }
+            }
+
+            // paint chunk on canvas
+            state.ctxD.putImageData(chunk, x*8, y*8);
+        }
+    }
+}
+
+
+
+function applyDominantColor() {
     // find the dominant color in image
     // this will be used as the background color
 
-    let colorCount = {};
-
-    for(let y=state.dy; y<state.dy+state.height; y++) {
-        for(let x=state.dx; x<state.dx+state.width; x++) {
-            let p = state.ctxB.getImageData(x,y,1,1).data;
-            let key = p[0]+"-"+p[1]+"-"+p[2];
-            if(!colorCount[key]) {
-                colorCount[key] = 0;
-            }
-            colorCount[key]++;
+    let max = 0;
+    let index = false
+    for(let i in palette) {
+        if(palette[i].count > max) {
+            max = palette[i].count;
+            index = i;
         }
     }
 
-    let key = false;
-    let score = 0;
-    for(let k in colorCount) {
-        if(colorCount[k] > score) {
-            score = colorCount[k];
-            key = k;
-        }
-    }
+    state.dominantIndex = index;
 
-    log(colorCount);
-    log(key + " has " + colorCount[key] + " colors");
+    log(palette[index].name + " has " + palette[index].count + " colors");
 
-    let col = key.split("-");
-
-    state.ctxC.fillStyle = "rgb("+col[0]+","+col[1]+","+col[2]+")";
+    // clear canvas with dominant color
+    state.ctxC.fillStyle = "rgb("
+        + palette[index].r + ","
+        + palette[index].g + ","
+        + palette[index].b + ")";
     state.ctxC.fillRect(0, 0, 320, 200);
 
-    // TODO tell farger når man finner ut nærmeste farge
-    // bedre måte å finne tilbake til fargekode, når det skal lages basic
     for(let y=state.dy; y<state.dy+state.height; y++) {
         for(let x=state.dx; x<state.dx+state.width; x++) {
             let p = state.ctxB.getImageData(x,y,1,1).data;
@@ -136,14 +178,15 @@ function applyDominantSubdominant() {
             state.ctxC.fillRect(x,y,1,1);
         }
     }
-
-
-    // find sub-dominant color for each 8x8 chunk
-    // this will be the character color
 }
 
 
 function applyPalette() {
+
+    // reset color counters in palette
+    for(let i in palette) {
+        palette[i].count = 1;
+    }
 
     for(let y=state.dy; y<state.dy+state.height; y++) {
         for(let x=state.dx; x<state.dx+state.width; x++) {
@@ -152,13 +195,12 @@ function applyPalette() {
             state.ctxB.fillRect(x,y,1,1);
         }
     }
-
 }
 
 function getNearestColor(data) {
 
     // give a score to each of the 16 colors
-    let score = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    let score = Array(16).fill(0);
 
     for(let i in palette) {
         score[i] = Math.pow(palette[i].r - data[0], 2)
@@ -166,7 +208,7 @@ function getNearestColor(data) {
             + Math.pow(palette[i].b - data[2], 2);
     }
 
-    // pick the index with the lowest score
+    // pick the index with the lowest score (aka closest match)
     let col = 0;
     let min = Math.pow(255,2) * 3;
     for(let i in score) {
@@ -176,7 +218,10 @@ function getNearestColor(data) {
         }
     }
 
-    // use the new colors
+    // inc color counter for this color in the palette
+    palette[col].count++;
+
+    // return the new color
     data[0] = palette[col].r;
     data[1] = palette[col].g;
     data[2] = palette[col].b;

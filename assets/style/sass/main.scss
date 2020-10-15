@@ -59,3 +59,29 @@ section.b canvas {
     background-repeat: no-repeat;
     background-position: left top;
 }
+
+ul.colors {
+    display: block;
+    li {
+        display: inline-block;
+        vertical-align: top;
+        width: 30px;
+        height: 30px;
+        &:nth-child(1) { background-color: #000000; }
+        &:nth-child(2) { background-color: #ffffff; }
+        &:nth-child(3) { background-color: #880000; }
+        &:nth-child(4) { background-color: #aaffee; }
+        &:nth-child(5) { background-color: #cc44cc; }
+        &:nth-child(6) { background-color: #00cc55; }
+        &:nth-child(7) { background-color: #0000aa; }
+        &:nth-child(8) { background-color: #eeee77; }
+        &:nth-child(9) { background-color: #dd8855; }
+        &:nth-child(10) { background-color: #664400; }
+        &:nth-child(11) { background-color: #ff7777; }
+        &:nth-child(12) { background-color: #333333; }
+        &:nth-child(13) { background-color: #777777; }
+        &:nth-child(14) { background-color: #aaff66; }
+        &:nth-child(15) { background-color: #0088ff; }
+        &:nth-child(16) { background-color: #bbbbbb; }
+    }
+}

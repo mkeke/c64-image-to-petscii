@@ -44,11 +44,11 @@ visualising the different stages of the conversion
 
 - [x] find dominant color
 
-- [ ] create 8x8 sub dominant on dominant
+- [x] create 8x8 sub dominant on dominant
 
 - [ ] read reference image
 
-- [ ] create reference map
+- [ ] create reference map (via hidden canvas. or visible during dev? always visible?)
 
 - [ ] preload reference image 0-255 16x16
 
@@ -59,3 +59,7 @@ visualising the different stages of the conversion
 - [ ] nudge original position
 
 - [ ] download images for all stages
+
+- [ ] `C=` svg loading animation before each stage
+
+- [ ] lots of status info along the way
