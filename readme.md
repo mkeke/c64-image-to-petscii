@@ -4,6 +4,8 @@ online tool for creating a PETSCII representation of a custom image.
 drag drop your image to convert it.  
 visualising the different stages of the conversion  
 
+![screenshot](filename.png)  
+
 ```
 [image]
   |
@@ -46,11 +48,11 @@ visualising the different stages of the conversion
 
 - [x] create 8x8 sub dominant on dominant
 
+- [ ] preload reference image 0-255 16x16
+
 - [ ] read reference image
 
 - [ ] create reference map (via hidden canvas. or visible during dev? always visible?)
-
-- [ ] preload reference image 0-255 16x16
 
 - [ ] nudge dropped image 1px in either direction
 
