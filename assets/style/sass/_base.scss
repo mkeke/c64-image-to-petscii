@@ -1,11 +1,27 @@
-@mixin retina {
-   @media
-   only screen and (-webkit-min-device-pixel-ratio: 2),
-   only screen and (   min--moz-device-pixel-ratio: 2),
-   only screen and (     -o-min-device-pixel-ratio: 2/1),
-   only screen and (        min-device-pixel-ratio: 2),
-   only screen and (                min-resolution: 192dpi),
-   only screen and (                min-resolution: 2dppx) {    
-       @content;
-   }
+@function str-replace($string, $search, $replace: '') {
+    $index: str-index($string, $search);
+
+    @if $index {
+        @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+
+    @return $string;
+}
+
+@mixin svg($vbx2, $vby2, $body, $vbx1:0, $vby1:0, $size: 'contain', $position: 'left top') {
+
+    $mimetype: "data:image/svg+xml;utf8,";
+    $open: "<svg viewBox='#{$vbx1} #{$vby1} #{$vbx2} #{$vby2}' xmlns='http://www.w3.org/2000/svg'>";
+    $close: "</svg>";
+
+    $svg: $mimetype + $open;
+    @each $p in $body {
+        $svg: $svg + str-replace($p, '#', '%23');
+    }
+    $svg: $svg + $close;
+
+    background-image: url($svg);
+    background-repeat: no-repeat;
+    background-size: $size;
+    background-position: $position;
 }

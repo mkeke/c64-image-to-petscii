@@ -1,3 +1,5 @@
+@import "base";
+
 * {
     margin: 0; padding: 0;
 }
@@ -60,54 +62,52 @@ section.b canvas {
     background-position: left top;
 }
 
-ul.colors {
-    display: block;
-    li {
-        display: inline-block;
-        vertical-align: top;
-        width: 30px;
-        height: 30px;
-        &:nth-child(1) { background-color: #000000; }
-        &:nth-child(2) { background-color: #ffffff; }
-        &:nth-child(3) { background-color: #880000; }
-        &:nth-child(4) { background-color: #aaffee; }
-        &:nth-child(5) { background-color: #cc44cc; }
-        &:nth-child(6) { background-color: #00cc55; }
-        &:nth-child(7) { background-color: #0000aa; }
-        &:nth-child(8) { background-color: #eeee77; }
-        &:nth-child(9) { background-color: #dd8855; }
-        &:nth-child(10) { background-color: #664400; }
-        &:nth-child(11) { background-color: #ff7777; }
-        &:nth-child(12) { background-color: #333333; }
-        &:nth-child(13) { background-color: #777777; }
-        &:nth-child(14) { background-color: #aaff66; }
-        &:nth-child(15) { background-color: #0088ff; }
-        &:nth-child(16) { background-color: #bbbbbb; }
-    }
+.colors {
+    width: 100%;
+    height: 0;
+    padding-bottom: percentage(1/16);
+    margin: 0 auto 15px;
+
+    $svg-body: (
+        '<rect x="0" y="0" width="2" height="2" fill="#000000" stroke="none"/>'
+        '<rect x="2" y="0" width="2" height="2" fill="#ffffff" stroke="none"/>'
+        '<rect x="4" y="0" width="2" height="2" fill="#880000" stroke="none"/>'
+        '<rect x="6" y="0" width="2" height="2" fill="#aaffee" stroke="none"/>'
+        '<rect x="8" y="0" width="2" height="2" fill="#cc44cc" stroke="none"/>'
+        '<rect x="10" y="0" width="2" height="2" fill="#00cc55" stroke="none"/>'
+        '<rect x="12" y="0" width="2" height="2" fill="#0000aa" stroke="none"/>'
+        '<rect x="14" y="0" width="2" height="2" fill="#eeee77" stroke="none"/>'
+        '<rect x="16" y="0" width="2" height="2" fill="#dd8855" stroke="none"/>'
+        '<rect x="18" y="0" width="2" height="2" fill="#664400" stroke="none"/>'
+        '<rect x="20" y="0" width="2" height="2" fill="#ff7777" stroke="none"/>'
+        '<rect x="22" y="0" width="2" height="2" fill="#333333" stroke="none"/>'
+        '<rect x="24" y="0" width="2" height="2" fill="#777777" stroke="none"/>'
+        '<rect x="26" y="0" width="2" height="2" fill="#aaff66" stroke="none"/>'
+        '<rect x="28" y="0" width="2" height="2" fill="#0088ff" stroke="none"/>'
+        '<rect x="30" y="0" width="2" height="2" fill="#bbbbbb" stroke="none"/>'
+    );
+    @include svg(32,2,$svg-body);
 }
 
 .logo {
-    width: 500px;
-    height: 500px;
-    position: relative;
+    width: 50%;
+    height: 0;
+    padding-bottom: 50%;
+    margin: 0 auto 15px;
     background-color: white;
-    margin-bottom: 15px;
-    svg {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-    }
-    div {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        //background: url('assets/images/logo.png') no-repeat left -15px top;
-        background-size: auto 100%;
-        opacity: 0.5;
-    }
 
+    $svg-body: (
+        '<g stroke="none">'
+        '    <path fill="#002255" d="'
+        '        M 314,31'
+        '        V 147'
+        '        A 128,124 0 1 0 314,359'
+        '        V 475'
+        '        A 232,233 0 1 1 314,31'
+        '        M 317,165 H 491 L 412,246 H 317 Z"/>'
+        '    <path fill="#ff0000" d="'
+        '        M 317,261 H 412 L 491,342 H 317 Z"/>'
+        '</g>'
+    );
+    @include svg(500, 500, $svg-body);
 }
