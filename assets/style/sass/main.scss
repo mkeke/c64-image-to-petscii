@@ -91,6 +91,7 @@ ul.colors {
     height: 500px;
     position: relative;
     background-color: white;
+    margin-bottom: 15px;
     svg {
         position: absolute;
         left: 0;
@@ -104,9 +105,9 @@ ul.colors {
         top: 0;
         width: 100%;
         height: 100%;
-        background: url('assets/images/logo.png') no-repeat left -15px top;
+        //background: url('assets/images/logo.png') no-repeat left -15px top;
         background-size: auto 100%;
-        opacity: 0.9;
+        opacity: 0.5;
     }
 
 }
