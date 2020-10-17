@@ -48,11 +48,43 @@ zz.loadReady(function(){
     initConf();
     initState();
 
+    createReferenceMap()
     preparePalette();
-
     handleDragDropImage(z(".droppable"), doStuff);
 
+
 });
+
+/*
+    createReferenceMap
+    load reference file
+    build a map of each character
+*/
+function createReferenceMap() {
+    // var img = new Image();   // Create new img element
+
+    var img = document.createElement("IMG");
+    var ctx = document.createElement("CANVAS").getContext("2d");
+    img.addEventListener('load', function() {
+
+        ctx.drawImage(this,0,0);
+
+        // for each 8x8 chunk
+        for(let y=0; y<16; y++) {
+            for(let x=0; x<16; x++) {
+                let c = ctx.getImageData(x*8, y*8, 8, 8).data;
+                let str = "";
+                for(let i=0; i<64; i++) {
+                    if(c[i*4] == 0) { str += " "; } else { str += "X"; }
+                    if (i%8 == 7) { str += "\n"; }
+                }
+                log(str);
+            }
+        }
+
+    }, false);
+    img.src = 'assets/images/petscii_0-255_16x16.png'; // Set source path
+}
 
 /*
     preparePalette

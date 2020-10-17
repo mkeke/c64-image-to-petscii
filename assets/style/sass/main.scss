@@ -111,3 +111,17 @@ section.b canvas {
     );
     @include svg(500, 500, $svg-body);
 }
+
+.ref {
+    image-rendering: pixelated; // chrome
+    // image-rendering: crisp-edges; firefox
+    $w: 128;
+    $h: 128;
+    $scale: 4;
+    width: #{$w * $scale}px;
+    height: #{$w * $scale}px;
+    margin: 0 auto 15px;
+
+    background: url('assets/images/petscii_0-255_16x16.png') no-repeat left top;
+    background-size: contain;    
+}
