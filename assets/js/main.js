@@ -5,6 +5,7 @@
 
 // debug level, see _base.js:initEnv()
 let debugLevel = null;
+const animFrame = getRequestAnimationFrame();
 
 const dom = {};
 const state = {
@@ -18,7 +19,8 @@ const state = {
     dy: 0,
 };
 const conf = {};
-const raf = getRequestAnimationFrame();
+const ref = [];
+let subdomimg = [];
 
 const palette = [
     { num: 0,  hex: "#000000", name:"Black" },
@@ -48,23 +50,38 @@ zz.loadReady(function(){
     initConf();
     initState();
 
-    createReferenceMap()
+    createReferenceArray()
     preparePalette();
     handleDragDropImage(z(".droppable"), doStuff);
 
 
+    /*
+    how to create a chunk, and draw it in a jiffy
+    let foo = new ImageData(8,8);
+    log(foo);
+    for(let i=0; i<64; i++) {
+        foo.data[i*4] = 255;
+        foo.data[i*4 + 1] = 0;
+        foo.data[i*4 + 2] = 0;
+        foo.data[i*4 + 3] = 255;
+    }
+
+    state.ctxA.putImageData(foo, 10, 10);
+    */
+
 });
 
 /*
-    createReferenceMap
+    createReferenceArray
     load reference file
-    build a map of each character
+    build an array representing each character
+    ref[0] = [false, false, true, true, true, true, false, ...]
 */
-function createReferenceMap() {
+function createReferenceArray() {
     // var img = new Image();   // Create new img element
 
-    var img = document.createElement("IMG");
-    var ctx = document.createElement("CANVAS").getContext("2d");
+    let img = document.createElement("IMG");
+    let ctx = document.createElement("CANVAS").getContext("2d");
     img.addEventListener('load', function() {
 
         ctx.drawImage(this,0,0);
@@ -72,13 +89,14 @@ function createReferenceMap() {
         // for each 8x8 chunk
         for(let y=0; y<16; y++) {
             for(let x=0; x<16; x++) {
-                let c = ctx.getImageData(x*8, y*8, 8, 8).data;
-                let str = "";
+                let d = ctx.getImageData(x*8, y*8, 8, 8).data;
+                let char = [];
+
                 for(let i=0; i<64; i++) {
-                    if(c[i*4] == 0) { str += " "; } else { str += "X"; }
-                    if (i%8 == 7) { str += "\n"; }
+                    char.push(d[i*4] != 0);
                 }
-                log(str);
+
+                ref.push(char);
             }
         }
 
@@ -103,19 +121,6 @@ function preparePalette() {
     }
 }
 
-function clearCanvases() {
-    state.ctxA.fillStyle = "#000000";
-    state.ctxA.fillRect(0, 0, 320, 200);
-    state.ctxB.fillStyle = "#000000";
-    state.ctxB.fillRect(0, 0, 320, 200);
-    state.ctxC.fillStyle = "#000000";
-    state.ctxC.fillRect(0, 0, 320, 200);
-    state.ctxD.fillStyle = "#000000";
-    state.ctxD.fillRect(0, 0, 320, 200);
-    state.ctxE.fillStyle = "#000000";
-    state.ctxE.fillRect(0, 0, 320, 200);
-}
-
 function doStuff() {
     // TODO request animation frame for each step?
 
@@ -129,13 +134,41 @@ function doStuff() {
 
     applySubDominantColor();
 
-    // findNearestPetscii
+    findNearestPetscii();
+
     // createBasic
+}
+
+function clearCanvases() {
+    state.ctxA.fillStyle = "#000000";
+    state.ctxA.fillRect(0, 0, 320, 200);
+    state.ctxB.fillStyle = "#000000";
+    state.ctxB.fillRect(0, 0, 320, 200);
+    state.ctxC.fillStyle = "#000000";
+    state.ctxC.fillRect(0, 0, 320, 200);
+    state.ctxD.fillStyle = "#000000";
+    state.ctxD.fillRect(0, 0, 320, 200);
+    state.ctxE.fillStyle = "#000000";
+    state.ctxE.fillRect(0, 0, 320, 200);
+}
+
+function findNearestPetscii() {
+    log("so yeah");
+
+    // for each chunk in subdomimg
+    for(let i in subdomimg) {
+        // find closest match
+        // draw closest match on canvas, in sub-dominant color
+    }
 }
 
 function applySubDominantColor() {
     // find sub-dominant color for each 8x8 chunk
     // this will be the character color
+
+    // also update subdomimg to represent each 8x8 chunk in the image
+    subdomimg = [];
+
     for(let y=0; y<25; y++) {
         for(let x=0; x<40; x++) {
 
@@ -162,14 +195,23 @@ function applySubDominantColor() {
             }
 
             // replace everything that is not sub-dominant with dominant
+            let imageData = [];
             for(let i=0; i<256; i+=4) {
                 let rgb = `${chunk.data[i]},${chunk.data[i + 1]},${chunk.data[i + 2]}`;
-                if (rgbLookup[rgb].num != subIndex) {                   
+                if (rgbLookup[rgb].num != subIndex) {
                     chunk.data[i] = palette[state.dominantIndex].r;
                     chunk.data[i+1] = palette[state.dominantIndex].g;
                     chunk.data[i+2] = palette[state.dominantIndex].b;
+
+                    imageData.push(true);
+                } else {
+                    imageData.push(false);
                 }
+
+                // add pixel info about current chunk
             }
+
+            subdomimg.push({data:imageData, i:subIndex});
 
             // paint chunk on canvas
             state.ctxD.putImageData(chunk, x*8, y*8);

@@ -32,6 +32,11 @@ visualising the different stages of the conversion
 
 ## master plan
 
+- [x] preload reference image 0-255 16x16
+- [x] read reference image
+- [x] create reference map (via hidden canvas. or visible during dev? always visible?)
+    linear array med true, false, ... 
+
 - [x] DONE drag-drop image, get image data
 
 - [x] DONE resize image to 320x200, centered
@@ -48,13 +53,13 @@ visualising the different stages of the conversion
 
 - [x] create 8x8 sub dominant on dominant
 
+- [x] create linear array with subdom img pixels
+subdomimg[i].data = [true, false, false, ..]
+subdomimg[i].i = index to palette
+
 - [ ] double buffering + raf. Write stages to a internal canvas first.
 
-- [x] preload reference image 0-255 16x16
-
-- [x] read reference image
-
-- [ ] create reference map (via hidden canvas. or visible during dev? always visible?)
+- [ ] 
 
 - [ ] nudge dropped image 1px in either direction
 
