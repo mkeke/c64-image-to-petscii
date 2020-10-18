@@ -48,9 +48,11 @@ visualising the different stages of the conversion
 
 - [x] create 8x8 sub dominant on dominant
 
-- [ ] preload reference image 0-255 16x16
+- [ ] double buffering + raf. Write stages to a internal canvas first.
 
-- [ ] read reference image
+- [x] preload reference image 0-255 16x16
+
+- [x] read reference image
 
 - [ ] create reference map (via hidden canvas. or visible during dev? always visible?)
 
