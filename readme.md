@@ -57,9 +57,7 @@ visualising the different stages of the conversion
 subdomimg[i].data = [true, false, false, ..]
 subdomimg[i].i = index to palette
 
-- [ ] double buffering + raf. Write stages to a internal canvas first.
-
-- [ ] 
+- [x] find closest resemblance
 
 - [ ] nudge dropped image 1px in either direction
 
@@ -72,3 +70,5 @@ subdomimg[i].i = index to palette
 - [ ] `C=` svg loading animation before each stage
 
 - [ ] lots of status info along the way
+
+- [ ] double buffering + raf. Write stages to a internal canvas first.

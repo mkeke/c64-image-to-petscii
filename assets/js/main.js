@@ -53,22 +53,6 @@ zz.loadReady(function(){
     createReferenceArray()
     preparePalette();
     handleDragDropImage(z(".droppable"), doStuff);
-
-
-    /*
-    how to create a chunk, and draw it in a jiffy
-    let foo = new ImageData(8,8);
-    log(foo);
-    for(let i=0; i<64; i++) {
-        foo.data[i*4] = 255;
-        foo.data[i*4 + 1] = 0;
-        foo.data[i*4 + 2] = 0;
-        foo.data[i*4 + 3] = 255;
-    }
-
-    state.ctxA.putImageData(foo, 10, 10);
-    */
-
 });
 
 /*
@@ -99,9 +83,9 @@ function createReferenceArray() {
                 ref.push(char);
             }
         }
-
     }, false);
     img.src = 'assets/images/petscii_0-255_16x16.png'; // Set source path
+
 }
 
 /*
@@ -153,19 +137,80 @@ function clearCanvases() {
 }
 
 function findNearestPetscii() {
-    log("so yeah");
+    let pokes = [];
 
     // for each chunk in subdomimg
     for(let i in subdomimg) {
-        // find closest match
+        // subdomimg[i].data = array(64) true|false
+        // subdomimg[i].i = index to subdominant color
+
+        // get a score for each chunk in the reference
+        // keep the highest score + index along the way
+        let maxScore = -1;
+        let index = -1;
+
+        for(let ch in ref) {
+            let score = 0; // score for this reference character
+            for(let px in ref[ch]) {
+                if(ref[ch][px] === subdomimg[i].data[px]) {
+                    score++;
+                }
+            }
+            if (score > maxScore) {
+                maxScore = score;
+                index = ch;
+                if(maxScore == 64) {
+                    break;
+                }
+            }
+        }
+
+        // chunk looks like ref[index] with maxScore
+        pokes.push(index);
+        pokes.push(subdomimg[i].i);
+
+/*
+        log(index);
+        log(subdomimg[i]);
+        log(ref[index]);
+        return;
+*/
+
+        // draw the chunk to the canvas
+/*
+        // clear canvas with dominant color
+        state.ctxE.fillStyle = "rgb("
+            + palette[state.dominantIndex].r + ","
+            + palette[state.dominantIndex].g + ","
+            + palette[state.dominantIndex].b + ")";
+        state.ctxE.fillRect(0, 0, 320, 200);
+*/
+
         // draw closest match on canvas, in sub-dominant color
+        let chunk = new ImageData(8,8);
+        for(let c=0; c<64; c++) {
+            chunk.data[c*4] = ref[index][c]?palette[subdomimg[i].i].r:palette[state.dominantIndex].r;
+            chunk.data[c*4+1] = ref[index][c]?palette[subdomimg[i].i].g:palette[state.dominantIndex].g;
+            chunk.data[c*4+2] = ref[index][c]?palette[subdomimg[i].i].b:palette[state.dominantIndex].b;
+            chunk.data[c*4+3] = 255;
+        }
+        let y = Math.floor(parseInt(i)/40)*8;
+        let x = (parseInt(i)%40)*8;
+        state.ctxE.putImageData(chunk, x, y);
     }
+
+    /*
+    TODO somethings fishy
+    the canvas is created nicely
+    but the character code is inverse some places
+    log(pokes);
+    */
 }
 
 function applySubDominantColor() {
     // find sub-dominant color for each 8x8 chunk
     // this will be the character color
-
+log(rgbLookup);
     // also update subdomimg to represent each 8x8 chunk in the image
     subdomimg = [];
 
@@ -198,14 +243,15 @@ function applySubDominantColor() {
             let imageData = [];
             for(let i=0; i<256; i+=4) {
                 let rgb = `${chunk.data[i]},${chunk.data[i + 1]},${chunk.data[i + 2]}`;
+
                 if (rgbLookup[rgb].num != subIndex) {
                     chunk.data[i] = palette[state.dominantIndex].r;
                     chunk.data[i+1] = palette[state.dominantIndex].g;
                     chunk.data[i+2] = palette[state.dominantIndex].b;
 
-                    imageData.push(true);
-                } else {
                     imageData.push(false);
+                } else {
+                    imageData.push(true);
                 }
 
                 // add pixel info about current chunk
