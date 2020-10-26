@@ -72,3 +72,5 @@ subdomimg[i].i = index to palette
 - [ ] lots of status info along the way
 
 - [ ] double buffering + raf. Write stages to a internal canvas first.
+
+- [ ] respionsive width. under hverandre når width < 670

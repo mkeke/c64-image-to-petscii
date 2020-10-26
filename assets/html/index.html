@@ -12,14 +12,69 @@
 </head>
 <body>
     <div class="layout">
+        <div class="content">
+            
+            <h1>Image to PETSCII converter</h1>
+
+            <p class="intro">
+                Drop an image here!
+            </p>
+
+            <section class="droppable col-left">
+                <div></div>
+            </section>
+
+            <section class="stage a col-right">
+                <canvas width="320" height="200"></canvas>
+                <p>
+                    Stage 1: original image, resized to max 320x200 and centered
+                </p>
+            </section>
+
+            <section class="stage b col-left">
+                <canvas width="320" height="200"></canvas>
+                <p>
+                    Stage 2: image adjusted to 16 color palette
+                </p>
+            </section>
+
+            <section class="stage c col-right">
+                <canvas width="320" height="200"></canvas>
+                <p>
+                    Stage 3: dominant color detected and set as background color
+                </p>
+            </section>
+
+            <section class="stage d col-left">
+                <canvas width="320" height="200"></canvas>
+                <p>
+                    Stage 4: 8x8 chunks with most frequent color on dominant background
+                </p>
+            </section>
+
+            <section class="stage e col-right">
+                <canvas width="320" height="200"></canvas>
+                <p>
+                    Stage 5: nearest PETSCII character for each 8x8 chunk
+                </p>
+            </section>
+
+            <section class="stage f col-full">
+                <p>
+                    Stage 6: BASIC code
+                </p>
+            </section>
+
+        </div>
+    </div>
+
 
         <!--
         <div class="logo"></div>
 
-        <div class="colors"></div>
 
+        <div class="colors"></div>
         <div class="ref"></div>
-        -->
 
         <section class="stage a resize droppable">
             <canvas width="320" height="200"></canvas>
@@ -58,10 +113,11 @@
 
         <br />
 
-        <section class="stage e basic">
+        <section class="stage f basic">
             <p>BASIC code</p>
         </section>
-    </div>
+        -->
+
     <script>
         const timestamp = @@timestamp;
     </script>

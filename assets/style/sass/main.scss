@@ -9,24 +9,232 @@ ul {
 }
 
 html, body {
-    height: 100%;
-    background-color: #212121;
+    // height: 100%;
+    background-color: #000;
     color: #eeeeee;
-
     padding: 10px;
+    font-family: monospace;
+    font-size: 12px;
 }
 
 .layout {
-    padding: 10px;
+    width: 100%;
+    min-width: 690px;
+    max-width: 1000px;
+    margin: 0 auto 20px;
+
+    .content {
+        h1 {
+            text-align: center;
+        }
+        p.intro {
+            padding: 5px;
+            box-sizing: border-box;
+        }
+    }
+}
+
+section {
+    background-color: #212121;
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
     text-align: center;
 }
+
+canvas {
+    display: inline-block;
+    background-color: black;
+    margin-bottom: 5px;
+    p {
+        margin-bottom: 5px;
+    }
+}
+
+/*
+    section grid layout
+    TODO change order for smaller screens
+*/
+.content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    grid-column-gap: 30px;
+    grid-row-gap: 30px;
+
+    h1 {
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+
+    p.intro {
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+
+    section.droppable {
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+    section.a {
+        grid-column-start: 2;
+        grid-column-end: 3;
+    }
+    section.b {
+        grid-column-start: 2;
+        grid-column-end: 3;
+    }
+    section.c {
+        grid-column-start: 1;
+        grid-column-end: 2;
+        grid-row-start: 4;
+    }
+    section.d {
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+    section.e {
+        grid-column-start: 2;
+        grid-column-end: 3;
+    }
+    section.f {
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+}
+
+@media(max-width: 710px) {
+    .layout {
+        background-color: red;
+    }
+}
+
+/*
+    arrow between sections
+    TODO responsive to narrow screens
+*/
+p.intro, section {
+    position: relative;
+    &:after {
+        content: '';
+        position: absolute;
+        width: 30px;
+        height: 30px;
+
+        $svg-body: (
+            '<path stroke="green" stroke-width="2" fill="none" '
+            'd="M20,2 V38 M5,25 L 20,38 L 35,25" '
+            '/>'
+        );
+        @include svg(40, 40, $svg-body, 0, 0, contain, center center);
+
+    }
+}
+
+p.intro:after {
+    left: 0;
+    top: 100%;
+}
+section.droppable:after {
+    left: 100%;
+    top: 50%;
+    transform: translate(0, -50%) rotate(-90deg);
+}
+section.a:after {
+    left: 50%;
+    top: 100%;
+    transform: translate(-50%, 0);
+}
+section.b:after {
+    right: 100%;
+    top: 50%;
+    transform: translate(0, -50%) rotate(90deg);
+}
+section.c:after {
+    left: 50%;
+    top: 100%;
+    transform: translate(-50%, 0);
+}
+section.d:after {
+    left: 100%;
+    top: 50%;
+    transform: translate(0, -50%) rotate(-90deg);
+}
+section.e:after {
+    left: 50%;
+    top: 100%;
+    transform: translate(-50%, 0);
+}
+section.f:after {
+    content: none;
+}
+
+
+
+
+
+.droppable {
+    box-sizing: border-box;
+//    border: 2px dashed #666;
+    background-color: transparent;
+    position: relative;
+    &.dragover {
+        //border: 2px solid green;
+        background-color: white;
+    }
+    $svg-body: (
+        '<g stroke="none">'
+        '    <path fill="#002255" d="'
+        '        M 314,31'
+        '        V 147'
+        '        A 128,124 0 1 0 314,359'
+        '        V 475'
+        '        A 232,233 0 1 1 314,31'
+        '        M 317,165 H 491 L 412,246 H 317 Z"/>'
+        '    <path fill="#ff0000" d="'
+        '        M 317,261 H 412 L 491,342 H 317 Z"/>'
+        '</g>'
+    );
+    @include svg(500, 500, $svg-body, 0, 0, contain, center center);
+
+    div {
+        position: absolute;
+        left: 5px;
+        top: 5px;
+        right: 5px;
+        bottom: 5px;
+//        background-color: #ffffff30;
+
+
+    }
+}
+
+/*
+    section {
+        display: inline-block;
+        vertical-align: top;
+        width: 320px;
+        height: 200px;
+        background-color: black;
+        margin: 0 5px 10px;
+        text-align: left;
+
+        &.droppable {
+        }
+    }
+*/
+
+
+
+
+
+/*
 
 section {
     display: inline-block;
     vertical-align: top;
 
     margin: 0 auto 10px auto;
-    border: 2px dashed #666;
     padding: 5px;
 
     white-space: nowrap;
@@ -35,12 +243,12 @@ section {
         width: 320px;
         height: 200px;
         background-color: black;
-        display: inline-block;
-        vertical-align: top;
+        display: block;
+        margin: 0 auto;
     }
     p {
         width: 320px;
-        height: 200px;
+        height: auto;
         padding: 5px;
         box-sizing: border-box;
 
@@ -52,15 +260,13 @@ section {
     }
 }
 
-.dragover {
-    border: 2px solid green;
-}
 
 section.b canvas {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: left top;
 }
+*/
 
 .colors {
     width: 100%;
