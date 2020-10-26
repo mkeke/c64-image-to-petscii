@@ -73,4 +73,6 @@ subdomimg[i].i = index to palette
 
 - [ ] double buffering + raf. Write stages to a internal canvas first.
 
-- [ ] respionsive width. under hverandre når width < 670
+- [x] respionsive width. under hverandre når width < 670
+
+- [ ] bare bruk farger fra $palette i gui

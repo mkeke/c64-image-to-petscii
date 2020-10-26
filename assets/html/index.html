@@ -20,46 +20,74 @@
                 Drop an image here!
             </p>
 
-            <section class="droppable col-left">
-                <div></div>
+            <section class="droppable">
+                <div class="active">
+                    <h2>Options</h2>
+                    <h3>Force background color</h3>
+                    <ul class="bgcolor">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                    <h3>Nudge image 1px</h3>
+                    <ul class="nudge">
+                        <li>up</li>
+                        <li>left</li>
+                        <li>right</li>
+                        <li>down</li>
+                    </ul>
+                </div>
             </section>
 
-            <section class="stage a col-right">
+            <section class="stage a">
                 <canvas width="320" height="200"></canvas>
                 <p>
                     Stage 1: original image, resized to max 320x200 and centered
                 </p>
             </section>
 
-            <section class="stage b col-left">
+            <section class="stage b">
                 <canvas width="320" height="200"></canvas>
                 <p>
                     Stage 2: image adjusted to 16 color palette
                 </p>
             </section>
 
-            <section class="stage c col-right">
+            <section class="stage c">
                 <canvas width="320" height="200"></canvas>
                 <p>
                     Stage 3: dominant color detected and set as background color
                 </p>
             </section>
 
-            <section class="stage d col-left">
+            <section class="stage d">
                 <canvas width="320" height="200"></canvas>
                 <p>
                     Stage 4: 8x8 chunks with most frequent color on dominant background
                 </p>
             </section>
 
-            <section class="stage e col-right">
+            <section class="stage e">
                 <canvas width="320" height="200"></canvas>
                 <p>
                     Stage 5: nearest PETSCII character for each 8x8 chunk
                 </p>
             </section>
 
-            <section class="stage f col-full">
+            <section class="stage f">
                 <p>
                     Stage 6: BASIC code
                 </p>
