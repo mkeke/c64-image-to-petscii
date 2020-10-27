@@ -1,5 +1,28 @@
 @import "base";
 
+.testsvg {
+    /*
+        works in chrome, safari, ff
+    */
+    width: 400px;
+    height: 400px;
+    margin: 0 auto;
+    background-color: #222;
+    $svg-data: (
+        '<mask id="bar" stroke="none">'
+            '<rect x="0" y="0" width="100" height="100" fill="white" />'
+            '<circle cx="50" cy="50" r="14" fill="black" />'
+        '</mask>'
+        '<g stroke="#bbbbbb" stroke-width="20" fill="none" mask="url(#bar)">'
+            '<path d="M50,5 V95" />'
+            '<path d="M50,5 V95" transform="rotate(60 50 50)"/>'
+            '<path d="M50,5 V95" transform="rotate(-60 50 50)"/>'
+            '<circle stroke="none" fill="#bbbbbb" cx="50" cy="50" r="33" />'
+        '</g>'
+    );
+    @include svg(100, 100, $svg-data, 0, 0, contain, center center);
+}
+
 $palette: ('#000000' '#ffffff' '#880000' '#aaffee' '#cc44cc' '#00cc55' '#0000aa' '#eeee77' '#dd8855' '#664400' '#ff7777' '#333333' '#777777' '#aaff66' '#0088ff' '#bbbbbb');
 
 * {
