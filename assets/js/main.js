@@ -40,6 +40,8 @@ const palette = [
     { num: 14, hex: "#0088FF", name:"Light blue" },
     { num: 15, hex: "#BBBBBB", name:"Light grey 3" },
 ];
+
+// "221,136,85": {num: 8,r: 221,b: 85,g: 136,hex: "#DD8855",name: "Orange"}
 const rgbLookup = {};
 
 zz.loadReady(function(){
@@ -50,10 +52,37 @@ zz.loadReady(function(){
     initConf();
     initState();
 
+    handleOptionsToggle();
+    handleForceDominantColor();
+
     createReferenceArray()
     preparePalette();
-    handleDragDropImage(z(".droppable"), doStuff);
+    handleDragDropImage(z(".droppable"), doStage1);
 });
+
+function handleOptionsToggle() {
+    z(".options-toggle").addEventListener("click", function(e){
+        z(".options").toggleClass("active");
+    });
+}
+
+function handleForceDominantColor() {
+    // TODO, major todo!!!
+    /*
+        hgva skal egen tlig skje når man velger ny dominant farge?
+        skal man erstatte gamel dominant med forced?
+        kanskje det faktisk gjøres riktig nå?
+        men det er en bug med at man setter invert space med dominant farge
+        når man kunne hatt space uten farge
+    */
+    z(".options .bgcolor li").each(function(i, el){
+        el.addEventListener("click", function(){
+            z(".options .bgcolor li").removeClass("active");
+            z(".options .bgcolor li")[i].addClass("active");
+            doStage3(i);
+        })
+    });
+}
 
 /*
     createReferenceArray
@@ -105,23 +134,34 @@ function preparePalette() {
     }
 }
 
-function doStuff() {
-    // TODO request animation frame for each step?
+// TODO request animation frame for each step?
 
+function doStage1() {
     clearCanvases();
-
     resizeImage(arguments[0]);
-
-    applyPalette();
-
-    applyDominantColor();
-
-    applySubDominantColor();
-
-    findNearestPetscii();
-
-    // createBasic
+    doStage2();
 }
+function doStage2() {
+    applyPalette();
+    doStage3();
+}
+function doStage3(forcedDominantColorIndex) {
+    applyDominantColor(forcedDominantColorIndex);
+    doStage4();
+}
+function doStage4() {
+    applySubDominantColor();
+    doStage5();
+}
+function doStage5() {
+    findNearestPetscii();
+    doStage6();
+}
+function doStage6() {
+    createBasic();
+}
+
+
 
 function clearCanvases() {
     state.ctxA.fillStyle = "#000000";
@@ -134,6 +174,10 @@ function clearCanvases() {
     state.ctxD.fillRect(0, 0, 320, 200);
     state.ctxE.fillStyle = "#000000";
     state.ctxE.fillRect(0, 0, 320, 200);
+}
+
+function createBasic() {
+    log("so yeah");
 }
 
 function findNearestPetscii() {
@@ -210,7 +254,7 @@ function findNearestPetscii() {
 function applySubDominantColor() {
     // find sub-dominant color for each 8x8 chunk
     // this will be the character color
-log(rgbLookup);
+
     // also update subdomimg to represent each 8x8 chunk in the image
     subdomimg = [];
 
@@ -267,20 +311,27 @@ log(rgbLookup);
 
 
 
-function applyDominantColor() {
+function applyDominantColor(forcedDominantColorIndex) {
     // find the dominant color in image
     // this will be used as the background color
 
-    let max = 0;
-    let index = false
-    for(let i in palette) {
-        if(palette[i].count > max) {
-            max = palette[i].count;
-            index = i;
+    let index = false;
+
+    if (forcedDominantColorIndex !== undefined) {
+        index = forcedDominantColorIndex;        
+    } else {
+        let max = 0;
+        for(let i in palette) {
+            if(palette[i].count > max) {
+                max = palette[i].count;
+                index = i;
+            }
         }
     }
 
     state.dominantIndex = index;
+    z(".options .bgcolor li").removeClass("active");
+    z(".options .bgcolor li")[index].addClass("active");
 
     log(palette[index].name + " has " + palette[index].count + " colors");
 
@@ -293,9 +344,16 @@ function applyDominantColor() {
 
     for(let y=state.dy; y<state.dy+state.height; y++) {
         for(let x=state.dx; x<state.dx+state.width; x++) {
+            // TODO only fill if different from state.dominantIndex
             let p = state.ctxB.getImageData(x,y,1,1).data;
-            state.ctxC.fillStyle = "rgba("+p[0]+","+p[1]+","+p[2]+","+p[3]+")";
-            state.ctxC.fillRect(x,y,1,1);
+            let rgb = `${p[0]},${p[1]},${p[2]}`;
+
+            if(rgbLookup[rgb].num != state.dominantIndex) {
+                state.ctxC.fillStyle = `rgba(${rgb},255)`; // "rgba("+p[0]+","+p[1]+","+p[2]+","+p[3]+")";
+                state.ctxC.fillRect(x,y,1,1);
+            }
+
+
         }
     }
 }
@@ -383,6 +441,7 @@ function handleDragDropImage(el, callback) {
         e.preventDefault();
         e.stopPropagation();
         el.addClass('dragover');
+        z(".options").removeClass("active");
     });
 
     el.addEventListener('dragleave', function(e) {

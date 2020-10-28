@@ -63,8 +63,6 @@ subdomimg[i].i = index to palette
 
 - [ ] force dominant color
 
-- [ ] nudge original position
-
 - [ ] download images for all stages
 
 - [ ] `C=` svg loading animation before each stage
@@ -76,6 +74,8 @@ subdomimg[i].i = index to palette
 - [x] respionsive width. under hverandre når width < 670
 
 - [ ] bare bruk farger fra $palette i gui
+
+- [ ] hide options on dragover
 
 
 google sitt tannhjul (1220 chars)
