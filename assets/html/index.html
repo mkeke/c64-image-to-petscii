@@ -11,7 +11,6 @@
     <style>/* file:main.min.css */</style>
 </head>
 <body>
-    <div class="testsvg"></div>
     <div class="layout">
         <div class="content">
             
@@ -55,98 +54,62 @@
             </section>
 
             <section class="stage a">
-                <canvas width="320" height="200"></canvas>
                 <p>
-                    Stage 1: original image, resized to max 320x200 and centered
+                    Stage A: original image, resized to max 320x200 and centered<br />
+                    <a class="dl" href="#">download image</a>
                 </p>
+                <canvas width="320" height="200"></canvas>
             </section>
 
             <section class="stage b">
-                <canvas width="320" height="200"></canvas>
                 <p>
-                    Stage 2: image adjusted to 16 color palette
+                    Stage B: image adjusted to 16 color palette<br />
+                    <a class="dl" href="#">download image</a>
                 </p>
+                <canvas width="320" height="200"></canvas>
             </section>
 
             <section class="stage c">
-                <canvas width="320" height="200"></canvas>
                 <p>
-                    Stage 3: dominant color detected and set as background color
+                    Stage C: dominant color detected and set as background color<br />
+                    <a class="dl" href="#">download image</a>
                 </p>
+                <canvas width="320" height="200"></canvas>
             </section>
 
             <section class="stage d">
-                <canvas width="320" height="200"></canvas>
                 <p>
-                    Stage 4: 8x8 chunks with most frequent color on dominant background
+                    Stage D: 8x8 chunks with most frequent color on dominant background<br />
+                    <a class="dl" href="#">download image</a>
                 </p>
+                <canvas width="320" height="200"></canvas>
             </section>
 
             <section class="stage e">
-                <canvas width="320" height="200"></canvas>
                 <p>
-                    Stage 5: nearest PETSCII character for each 8x8 chunk
+                    Stage E: nearest PETSCII character for each 8x8 chunk<br />
+                    <a class="dl" href="#">download image</a>
                 </p>
+                <canvas width="320" height="200"></canvas>
             </section>
 
             <section class="stage f">
                 <p>
-                    Stage 6: BASIC code
+                    Stage F: BASIC code (click to copy)<br />
+                    <a href="#">download</a>
                 </p>
+                <pre></pre>
             </section>
 
+            <section>
+                <p>
+                    PETSCII reference image
+                </p>
+                <div class="ref"></div>
+                
+            </section>
         </div>
     </div>
-
-
-        <!--
-        <div class="logo"></div>
-
-
-        <div class="colors"></div>
-        <div class="ref"></div>
-
-        <section class="stage a resize droppable">
-            <canvas width="320" height="200"></canvas>
-            <p>Original image, resized to max 320x200, centered</p>
-        </section>
-
-        <br />
-
-        <section class="stage b palette">
-            <canvas width="320" height="200"></canvas>
-            <p>
-                Colors adjusted to C64 palette<br />
-            </p>
-        </section>
-
-        <br />
-
-        <section class="stage c dominant">
-            <canvas width="320" height="200"></canvas>
-            <p>dominant color background</p>
-        </section>
-
-        <br />
-
-        <section class="stage d subdominant">
-            <canvas width="320" height="200"></canvas>
-            <p>dominant color background and 8x8 squares with sub-dominant color</p>
-        </section>
-
-        <br />
-
-        <section class="stage e petscii">
-            <canvas width="320" height="200"></canvas>
-            <p>Nearest PETSCII character</p>
-        </section>
-
-        <br />
-
-        <section class="stage f basic">
-            <p>BASIC code</p>
-        </section>
-        -->
 
     <script>
         const timestamp = @@timestamp;
