@@ -59,23 +59,23 @@ subdomimg[i].i = index to palette
 
 - [x] find closest resemblance
 
-- [ ] nudge dropped image 1px in either direction
+- [x] force dominant color
 
-- [ ] force dominant color
-
-- [ ] download images for all stages
-
-- [ ] `C=` svg loading animation before each stage
-
-- [ ] lots of status info along the way
-
-- [ ] double buffering + raf. Write stages to a internal canvas first.
+- [x] download images for all stages
 
 - [x] respionsive width. under hverandre når width < 670
 
-- [ ] bare bruk farger fra $palette i gui
+- [x] bare bruk farger fra $palette i gui
 
-- [ ] hide options on dragover
+- [x] hide options on dragover
+
+- [x] show original resolution in own span (A)
+- [x] show number of colors used in own span (B)
+- [x] show name on dominant color in own span (C)
+
+- [ ] `C=` svg loading animation before each stage
+- [ ] lots of status info along the way
+- [ ] double buffering + raf. Write stages to a internal canvas first.
 
 
 google sitt tannhjul (1220 chars)

@@ -22,8 +22,7 @@
 
             <section class="droppable">
                 <div class="options">
-                    <h2>Options</h2>
-                    <h3>Force background color:</h3>
+                    <h2>Override dominant color:</h2>
                     <ul class="bgcolor">
                         <li></li>
                         <li></li>
@@ -42,71 +41,57 @@
                         <li></li>
                         <li></li>
                     </ul>
-                    <h3>Nudge image 1px</h3>
-                    <ul class="nudge">
-                        <li>up</li>
-                        <li>left</li>
-                        <li>right</li>
-                        <li>down</li>
-                    </ul>
+                    <div class="ref"></div>
                 </div>
                 <div class="options-toggle"></div>
             </section>
 
             <section class="stage a">
                 <p>
-                    Stage A: original image, resized to max 320x200 and centered<br />
-                    <a class="dl" href="#">download image</a>
+                    <b>Stage A:</b> original image <span></span> resized to max 320x200 and centered.
+                    [<a class="dl" href="#">download png</a>]
                 </p>
                 <canvas width="320" height="200"></canvas>
             </section>
 
             <section class="stage b">
                 <p>
-                    Stage B: image adjusted to 16 color palette<br />
-                    <a class="dl" href="#">download image</a>
+                    <b>Stage B:</b> image adjusted to 16 color palette. <span></span>
+                    [<a class="dl" href="#">download png</a>]
                 </p>
                 <canvas width="320" height="200"></canvas>
             </section>
 
             <section class="stage c">
                 <p>
-                    Stage C: dominant color detected and set as background color<br />
-                    <a class="dl" href="#">download image</a>
+                    <b>Stage C:</b> dominant color <span></span> detected and set as background color.
+                    [<a class="dl" href="#">download png</a>]
                 </p>
                 <canvas width="320" height="200"></canvas>
             </section>
 
             <section class="stage d">
                 <p>
-                    Stage D: 8x8 chunks with most frequent color on dominant background<br />
-                    <a class="dl" href="#">download image</a>
+                    <b>Stage D:</b> 8x8 chunks with most frequent color on dominant background.
+                    [<a class="dl" href="#">download png</a>]
                 </p>
                 <canvas width="320" height="200"></canvas>
             </section>
 
             <section class="stage e">
                 <p>
-                    Stage E: nearest PETSCII character for each 8x8 chunk<br />
-                    <a class="dl" href="#">download image</a>
+                    <b>Stage E:</b> nearest PETSCII character for each 8x8 chunk.
+                    [<a class="dl" href="#">download png</a>]
                 </p>
                 <canvas width="320" height="200"></canvas>
             </section>
 
             <section class="stage f">
                 <p>
-                    Stage F: BASIC code (click to copy)<br />
-                    <a href="#">download</a>
+                    <b>Stage F:</b> BASIC code (click to copy)<br />
+                    <a class="dl" href="#">download</a>
                 </p>
                 <pre></pre>
-            </section>
-
-            <section>
-                <p>
-                    PETSCII reference image
-                </p>
-                <div class="ref"></div>
-                
             </section>
         </div>
     </div>

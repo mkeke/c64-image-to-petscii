@@ -35,11 +35,11 @@ const palette = [
     { num: 8,  hex: "#DD8855", name:"Orange" },
     { num: 9,  hex: "#664400", name:"Brown" },
     { num: 10, hex: "#FF7777", name:"Light" },
-    { num: 11, hex: "#333333", name:"Dark grey 1" },
-    { num: 12, hex: "#777777", name:"Grey 2" },
+    { num: 11, hex: "#333333", name:"Dark grey" },
+    { num: 12, hex: "#777777", name:"Grey" },
     { num: 13, hex: "#AAFF66", name:"Light green" },
     { num: 14, hex: "#0088FF", name:"Light blue" },
-    { num: 15, hex: "#BBBBBB", name:"Light grey 3" },
+    { num: 15, hex: "#BBBBBB", name:"Light grey" },
 ];
 
 // "221,136,85": {num: 8,r: 221,b: 85,g: 136,hex: "#DD8855",name: "Orange"}
@@ -232,9 +232,12 @@ function doStageE() {
     create BASIC v2 listing
 */
 function doStageF() {
-    createBasic();
-}
 
+    createBasic();
+    let uri = 'data:text/plain;charset=utf-8,' + encodeURIComponent(z("section.f pre").innerHTML);
+    z("section.f a.dl").setAttribute("href", uri);
+    z("section.f a.dl").setAttribute("download", state.filename + "_f_basic.txt");
+}
 
 
 /*
@@ -280,6 +283,8 @@ function resizeImage(droppedImage){
 
     // put scaled image in first canvas
     state.ctxA.drawImage(droppedImage, 0, 0, ow, oh, state.dx, state.dy, state.width, state.height);
+
+    z("section.a p span").innerHTML = `(${ow}x${oh})`;
 }
 
 function applyPalette() {
@@ -297,6 +302,15 @@ function applyPalette() {
             state.ctxB.fillRect(x,y,1,1);
         }
     }
+
+    let numColors = 0;
+    for(let i in palette) {
+        if (palette[i].count > 0) {
+            numColors++;
+        }
+    }
+    z("section.b p span").innerHTML = `${numColors} colors used.`;
+
 }
 
 function getNearestColor(data) {
@@ -376,6 +390,8 @@ function applyDominantColor(forcedDominantColorIndex) {
             state.ctxC.fillRect(x,y,1,1);
         }
     }
+
+    z("section.c p span").innerHTML = palette[index].name;
 }
 
 function applySubDominantColor() {

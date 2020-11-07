@@ -1,6 +1,39 @@
 @import "base";
 
-$palette: ('#000000' '#ffffff' '#880000' '#aaffee' '#cc44cc' '#00cc55' '#0000aa' '#eeee77' '#dd8855' '#664400' '#ff7777' '#333333' '#777777' '#aaff66' '#0088ff' '#bbbbbb');
+$palette: (
+    '#000000'
+    '#ffffff'
+    '#880000'
+    '#aaffee'
+    '#cc44cc'
+    '#00cc55'
+    '#0000aa'
+    '#eeee77'
+    '#dd8855'
+    '#664400'
+    '#ff7777'
+    '#333333'
+    '#777777'
+    '#aaff66'
+    '#0088ff'
+    '#bbbbbb');
+
+$cBlack: 1;
+$cWhite: 2;
+$cRed: 3;
+$cCyan: 4;
+$cViolet: 5;
+$cGreen: 6;
+$cBlue: 7;
+$cYellow: 8;
+$cOrange: 9;
+$cBrown: 10;
+$cLight: 11;
+$cDarkGrey: 12;
+$cGrey: 13;
+$cLightGreen: 14;
+$cLightBlue: 15;
+$cLightGrey: 16;
 
 * {
     margin: 0; padding: 0;
@@ -11,13 +44,17 @@ ul {
 }
 
 a {
-    color: #eeeeee;
+    color: #{nth($palette, $cLightGreen)};
+    text-decoration: none;
+}
+
+b {
+    color: #{nth($palette, $cWhite)};
 }
 
 html, body {
-    // height: 100%;
-    background-color: #000;
-    color: #eeeeee;
+    background-color: #{nth($palette, $cBlack)};
+    color: #{nth($palette, $cLightGrey)};
     padding: 10px;
     font-family: monospace;
     font-size: 12px;
@@ -40,7 +77,7 @@ html, body {
 }
 
 section {
-    background-color: #212121;
+    background-color: #{nth($palette, $cDarkGrey)};
     width: 100%;
     padding: 5px;
     min-width: 330px;
@@ -53,7 +90,7 @@ section {
 
 canvas {
     display: inline-block;
-    background-color: black;
+    background-color: #{nth($palette, $cBlack)};
     margin-bottom: 5px;
 }
 
@@ -211,8 +248,8 @@ section.f:after {
     position: relative;
     overflow: hidden;
     &.dragover {
-        border: 2px solid #0088ff;
-        background-color: white;
+        border: 2px solid #{nth($palette, $cLightGreen)};
+        background-color: #{nth($palette, $cWhite)};
     }
     $svg-body: (
         '<g stroke="none">'
@@ -235,7 +272,6 @@ section.f:after {
         top: 0;
         width: 320px;
         height: 200px;
-        // background-color: #00000099;
         box-sizing: border-box;
         padding: 5px;
 
@@ -246,7 +282,8 @@ section.f:after {
         }
 
         h2 {
-            margin-bottom: 15px;
+            font-size: 14px;
+            margin-bottom: 10px;
         }
 
         ul.bgcolor {
@@ -254,21 +291,32 @@ section.f:after {
             grid-template-columns: repeat(16, 1fr);
             grid-column-gap: 5px;
             margin-bottom: 15px;
+            padding: 2px;
+            background-color: #{nth($palette, $cGrey)};
 
             li {
                 height: 0;
                 padding-bottom: 100%;
                 position: relative;
                 cursor: pointer;
+                &:hover:after {
+                    content: '';
+                    border: 1px solid #{nth($palette, $cWhite)};
+                    position: absolute;
+                    left: -2px;
+                    right: -2px;
+                    top: -2px;
+                    bottom: -2px;
+                }
                 &.active {
                     &:after {
                         content: '';
-                        height: 2px;
-                        width: 100%;
-                        background-color: white;
+                        border: 3px solid #{nth($palette, $cWhite)};
                         position: absolute;
-                        left: 0;
-                        bottom: -4px;
+                        left: -3px;
+                        right: -3px;
+                        top: -3px;
+                        bottom: -3px;
                     }
                 }
 
@@ -288,7 +336,7 @@ section.f:after {
             grid-row-gap: 5px;
             li {
                 padding: 5px 0;
-                background-color: green;
+                background-color: #{nth($palette, $cRed)};
                 &:nth-child(1) {
                     grid-column-start: 3;
                     grid-column-end: 4;
@@ -340,14 +388,17 @@ section.f:after {
 
 }
 
+section.c p span {
+    color: #{nth($palette, $cWhite)};
+}
 section.f pre {
     font-size: 15px;
     text-align: left;
     max-height: 200px;
     min-width: 320px;
     overflow-y: scroll;
-    background-color: #0000aa;
-    color: #0088ff;
+    background-color: #{nth($palette, $cBlue)};
+    color: #{nth($palette, $cLightBlue)};
     cursor: pointer;
 }
 @media(max-width: 725px) {
@@ -384,7 +435,7 @@ section.f pre {
     // image-rendering: crisp-edges; firefox
     $w: 128;
     $h: 128;
-    $scale: 2;
+    $scale: 1;
     width: #{$w * $scale}px;
     height: #{$w * $scale}px;
     margin: 0 auto 15px;
