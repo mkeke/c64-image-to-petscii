@@ -17,25 +17,7 @@ Click on the gears (options) to override the detected background color.
 
 The Commodore 64 offers a palette with the following 16 colors:
 
-<style>
-    span.color {display: inline-block; width: 32px; height: 32px;}
-</style>
-<span class="color" style="background-color: #000000;"></span>
-<span class="color" style="background-color: #ffffff;"></span>
-<span class="color" style="background-color: #880000;"></span>
-<span class="color" style="background-color: #aaffee;"></span>
-<span class="color" style="background-color: #cc44cc;"></span>
-<span class="color" style="background-color: #00cc55;"></span>
-<span class="color" style="background-color: #0000aa;"></span>
-<span class="color" style="background-color: #eeee77;"></span>
-<span class="color" style="background-color: #dd8855;"></span>
-<span class="color" style="background-color: #664400;"></span>
-<span class="color" style="background-color: #ff7777;"></span>
-<span class="color" style="background-color: #333333;"></span>
-<span class="color" style="background-color: #777777;"></span>
-<span class="color" style="background-color: #aaff66;"></span>
-<span class="color" style="background-color: #0088ff;"></span>
-<span class="color" style="background-color: #bbbbbb;"></span>
+![screenshot](images/palette.png)  
 
 The screen resolution is 320x200 px. There are several screen modes. This converter tool is made for the standard character mode, which has the following specs/limitations:
 - The screen consists of 40x25 characters, where each character is 8x8 px
