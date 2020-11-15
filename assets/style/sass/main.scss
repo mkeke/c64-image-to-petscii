@@ -66,8 +66,19 @@ html, body {
     margin: 0 auto 20px;
 
     .content {
+        margin-bottom: 15px;
         h1 {
             text-align: center;
+            position: relative;
+            &:after {
+                content: 'Standard Character Mode';
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translate(-50%, 0);
+                color: white;
+                font-size: 14px;
+            }
         }
         p.intro {
             padding: 5px;
@@ -152,6 +163,10 @@ canvas {
         .content {
             display: block;
 
+            h1 {
+                margin-bottom: 20px;
+            }
+
             p.intro {
                 text-align: center;
                 margin: 0 auto 30px;
@@ -187,8 +202,6 @@ p.intro, section {
             '/>'
         );
         @include svg(50, 50, $svg-body, 0, 0, contain, center center);
-        // 'd="M20,2 V38 M5,25 L 20,38 L 35,25" '
-
     }
 }
 
@@ -196,10 +209,9 @@ p.intro:after {
     left: 0;
     top: 100%;
 }
-section.droppable:after {
-    left: 100%;
-    top: 50%;
-    transform: translate(0, -50%) rotate(-90deg);
+section.droppable:after,
+section.ref:after {
+    display: none;
 }
 section.a:after {
     left: 50%;
@@ -271,9 +283,10 @@ section.f:after {
         left: 100%;
         top: 0;
         width: 320px;
-        height: 200px;
+        height: auto;
         box-sizing: border-box;
         padding: 5px;
+        background-color: #00000060;
 
         &.active {
             left: 50%;
@@ -324,42 +337,6 @@ section.f:after {
                     &:nth-child(#{$i}) {
                         background-color: #{nth($palette, $i)};
                     }
-                }
-            }
-        }
-
-        ul.nudge {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            grid-column-gap: 5px;
-            grid-row-gap: 5px;
-            li {
-                padding: 5px 0;
-                background-color: #{nth($palette, $cRed)};
-                &:nth-child(1) {
-                    grid-column-start: 3;
-                    grid-column-end: 4;
-                    grid-row-start: 1;
-                    grid-row-end: 2;
-                }
-                &:nth-child(2) {
-                    grid-column-start: 2;
-                    grid-column-end: 3;
-                    grid-row-start: 2;
-                    grid-row-end: 3;
-                }
-                &:nth-child(3) {
-                    grid-column-start: 4;
-                    grid-column-end: 5;
-                    grid-row-start: 2;
-                    grid-row-end: 3;
-                }
-                &:nth-child(4) {
-                    grid-column-start: 3;
-                    grid-column-end: 4;
-                    grid-row-start: 3;
-                    grid-row-end: 4;
                 }
             }
         }
@@ -430,12 +407,12 @@ section.f pre {
     }
 }
 
-.ref {
+.charset {
     image-rendering: pixelated; // chrome
-    // image-rendering: crisp-edges; firefox
+    // image-rendering: crisp-edges; // firefox
     $w: 128;
     $h: 128;
-    $scale: 1;
+    $scale: 2;
     width: #{$w * $scale}px;
     height: #{$w * $scale}px;
     margin: 0 auto 15px;

@@ -1,56 +1,45 @@
 /* include zquery */
 /* file:zquery.js */
 
-//=require _*.js
-
-// debug level, see _base.js:initEnv()
-let debugLevel = null;
-const animFrame = getRequestAnimationFrame();
-
-const dom = {};
-const state = {
-    ctxA: null,
-    ctxB: null,
-    ctxC: null,
-    ctxD: null,
-    width: 0,
-    height: 0,
-    dx: 0,
-    dy: 0,
-};
-const conf = {};
-const ref = [];
-let chunkImage = [];
-
-// palette[i].r .g .b is calculated
-const palette = [
-    { num: 0,  hex: "#000000", name:"Black" },
-    { num: 1,  hex: "#FFFFFF", name:"White" },
-    { num: 2,  hex: "#880000", name:"Red" },
-    { num: 3,  hex: "#AAFFEE", name:"Cyan" },
-    { num: 4,  hex: "#CC44CC", name:"Violet/purple" },
-    { num: 5,  hex: "#00CC55", name:"Green" },
-    { num: 6,  hex: "#0000AA", name:"Blue" },
-    { num: 7,  hex: "#EEEE77", name:"Yellow" },
-    { num: 8,  hex: "#DD8855", name:"Orange" },
-    { num: 9,  hex: "#664400", name:"Brown" },
-    { num: 10, hex: "#FF7777", name:"Light" },
-    { num: 11, hex: "#333333", name:"Dark grey" },
-    { num: 12, hex: "#777777", name:"Grey" },
-    { num: 13, hex: "#AAFF66", name:"Light green" },
-    { num: 14, hex: "#0088FF", name:"Light blue" },
-    { num: 15, hex: "#BBBBBB", name:"Light grey" },
-];
-
-// "221,136,85": {num: 8,r: 221,b: 85,g: 136,hex: "#DD8855",name: "Orange"}
-const rgbLookup = {};
-
 zz.loadReady(function(){
 
-    initEnv();
+    const debugLevel = 0;
+    const animFrame = getRequestAnimationFrame();
+    const state = {
+        ctxA: null,
+        ctxB: null,
+        ctxC: null,
+        ctxD: null,
+        width: 0,
+        height: 0,
+        dx: 0,
+        dy: 0,
+    };
+    const ref = [];
+    let chunkImage = [];
 
-    initDOM();
-    initConf();
+    // palette[i].r .g .b is calculated
+    const palette = [
+        { num: 0,  hex: "#000000", name:"Black" },
+        { num: 1,  hex: "#FFFFFF", name:"White" },
+        { num: 2,  hex: "#880000", name:"Red" },
+        { num: 3,  hex: "#AAFFEE", name:"Cyan" },
+        { num: 4,  hex: "#CC44CC", name:"Violet/purple" },
+        { num: 5,  hex: "#00CC55", name:"Green" },
+        { num: 6,  hex: "#0000AA", name:"Blue" },
+        { num: 7,  hex: "#EEEE77", name:"Yellow" },
+        { num: 8,  hex: "#DD8855", name:"Orange" },
+        { num: 9,  hex: "#664400", name:"Brown" },
+        { num: 10, hex: "#FF7777", name:"Light" },
+        { num: 11, hex: "#333333", name:"Dark grey" },
+        { num: 12, hex: "#777777", name:"Grey" },
+        { num: 13, hex: "#AAFF66", name:"Light green" },
+        { num: 14, hex: "#0088FF", name:"Light blue" },
+        { num: 15, hex: "#BBBBBB", name:"Light grey" },
+    ];
+
+    const rgbLookup = {};
+
     initState();
 
     handleOptionsToggle();
@@ -60,7 +49,8 @@ zz.loadReady(function(){
     createReferenceArray()
     preparePalette();
     handleDragDropImage(z(".droppable"), doStageA);
-});
+
+
 
 /*
     options
@@ -133,7 +123,6 @@ function createReferenceArray() {
         }
     }, false);
     img.src = 'assets/images/petscii_0-255_16x16.png'; // Set source path
-
 }
 
 /*
@@ -242,7 +231,6 @@ function doStageF() {
 
 /*
     clearCanvases
-    yup. just that.
 */
 function clearCanvases() {
     state.ctxA.fillStyle = "#000000";
@@ -279,9 +267,7 @@ function resizeImage(droppedImage){
     state.dx = state.width<320?Math.round((320-state.width)/2):0;
     state.dy = state.height<200?Math.round((200-state.height)/2):0;
 
-    log(`original:${ow}x${oh} resized:${state.width}x${state.height} offset:${state.dx}x${state.dy}`);
-
-    // put scaled image in first canvas
+    // put scaled image in canvas A
     state.ctxA.drawImage(droppedImage, 0, 0, ow, oh, state.dx, state.dy, state.width, state.height);
 
     z("section.a p span").innerHTML = `(${ow}x${oh})`;
@@ -480,6 +466,7 @@ function findNearestPetscii() {
                     score++;
                 }
             }
+
             if (score > maxScore) {
                 maxScore = score;
                 index = ch;
@@ -504,6 +491,7 @@ function findNearestPetscii() {
         let y = Math.floor(parseInt(i)/40)*8;
         let x = (parseInt(i)%40)*8;
         state.ctxE.putImageData(chunk, x, y);
+
     }
 }
 
@@ -528,12 +516,6 @@ function createBasic() {
 
     z("section.f pre").innerHTML = str;
 }
-
-
-
-
-
-
 
 
 
@@ -586,8 +568,6 @@ function handleDragDropImage(el, callback) {
 
 }
 
-function initDOM(){}
-function initConf(){}
 function initState(){
     state.ctxA = z("section.a canvas").getContext("2d");
     state.ctxB = z("section.b canvas").getContext("2d");
@@ -603,3 +583,10 @@ function getRequestAnimationFrame() {
             window.msRequestAnimationFrame;
 }
 
+function log(s) {
+    if (debugLevel > 0) {
+        console.log(s);
+    }
+}
+
+});
