@@ -14,6 +14,9 @@ zz.loadReady(function(){
         height: 0,
         dx: 0,
         dy: 0,
+        brightnessFactor: 1.0,
+        hueFactor: 1.0,
+        saturationFactor: 1.8,
     };
     const ref = [];
     let chunkImage = [];
@@ -44,6 +47,9 @@ zz.loadReady(function(){
 
     handleOptionsToggle();
     handleForceDominantColor();
+    // handleHueChange();
+    handleBrightnessChange();
+    handleSaturationChange();
     handleClipboard();
 
     createReferenceArray()
@@ -72,7 +78,26 @@ function handleForceDominantColor() {
     });
 }
 
+function handleBrightnessChange() {
+    z(".options .brightness").addEventListener("change", function(e){
+        state.brightnessFactor = z(".options .brightness").value;
+        doStageB();
+    });
+}
 
+function handleHueChange() {
+    z(".options .hue").addEventListener("change", function(e){
+        state.hueFactor = z(".options .hue").value;
+        doStageB();
+    });
+}
+
+function handleSaturationChange() {
+    z(".options .saturation").addEventListener("change", function(e){
+        state.saturationFactor = z(".options .saturation").value;
+        doStageB();
+    });
+}
 /*
     downloads
 */
@@ -301,13 +326,25 @@ function applyPalette() {
 
 function getNearestColor(data) {
 
+    // increase saturation before converting to palette
+    let color = [data[0],data[1],data[2]];
+
+    color[0] *= state.brightnessFactor;
+    color[1] *= state.brightnessFactor;
+    color[2] *= state.brightnessFactor;
+
+    let hsv = RGBtoHSV(color);
+    hsv[0] *= state.hueFactor;
+    hsv[1] *= state.saturationFactor;
+    color = HSVtoRGB(hsv);
+
     // give a score to each of the 16 colors
     let score = Array(16).fill(0);
 
     for(let i in palette) {
-        score[i] = Math.pow(palette[i].r - data[0], 2)
-            + Math.pow(palette[i].g - data[1], 2)
-            + Math.pow(palette[i].b - data[2], 2);
+        score[i] = Math.pow(palette[i].r - color[0], 2)
+            + Math.pow(palette[i].g - color[1], 2)
+            + Math.pow(palette[i].b - color[2], 2);
     }
 
     // pick the index with the lowest score (aka closest match)
@@ -588,5 +625,92 @@ function log(s) {
         console.log(s);
     }
 }
+
+// stolen from the interwebs
+function RGBtoHSV(color) {
+    let r,g,b,h,s,v;
+    r= color[0];
+    g= color[1];
+    b= color[2];
+    let min = Math.min( r, g, b );
+    let max = Math.max( r, g, b );
+
+
+    v = max;
+    let delta = max - min;
+    if( max != 0 )
+        s = delta / max;        // s
+    else {
+        // r = g = b = 0        // s = 0, v is undefined
+        s = 0;
+        h = -1;
+        return [h, s, undefined];
+    }
+    if( r === max )
+        h = ( g - b ) / delta;      // between yellow & magenta
+    else if( g === max )
+        h = 2 + ( b - r ) / delta;  // between cyan & yellow
+    else
+        h = 4 + ( r - g ) / delta;  // between magenta & cyan
+    h *= 60;                // degrees
+    if( h < 0 )
+        h += 360;
+    if ( isNaN(h) )
+        h = 0;
+    return [h,s,v];
+}
+
+function HSVtoRGB(color) {
+    var i;
+    var h,s,v,r,g,b;
+    h= color[0];
+    s= color[1];
+    v= color[2];
+    if(s === 0 ) {
+        // achromatic (grey)
+        r = g = b = v;
+        return [r,g,b];
+    }
+    h /= 60;            // sector 0 to 5
+    i = Math.floor( h );
+    let f = h - i;          // factorial part of h
+    let p = v * ( 1 - s );
+    let q = v * ( 1 - s * f );
+    let t = v * ( 1 - s * ( 1 - f ) );
+    switch( i ) {
+        case 0:
+            r = v;
+            g = t;
+            b = p;
+            break;
+        case 1:
+            r = q;
+            g = v;
+            b = p;
+            break;
+        case 2:
+            r = p;
+            g = v;
+            b = t;
+            break;
+        case 3:
+            r = p;
+            g = q;
+            b = v;
+            break;
+        case 4:
+            r = t;
+            g = p;
+            b = v;
+            break;
+        default:        // case 5:
+            r = v;
+            g = p;
+            b = q;
+            break;
+    }
+    return [r,g,b];
+}
+
 
 });
